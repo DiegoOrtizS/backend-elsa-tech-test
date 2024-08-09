@@ -6,7 +6,6 @@ repos:
       entry: ruff format .
       language: python
       types: [python]
-      # stages: [commit]
 -   repo: local
     hooks:
     - id: ruff-check
@@ -14,7 +13,7 @@ repos:
       entry: ruff check --fix .
       language: python
       types: [python]
-      # stages: [commit]
+      stages: [prepare-commit-msg]
 -   repo: local
     hooks:
     - id: mypy
@@ -23,7 +22,6 @@ repos:
       pass_filenames: false
       language: python
       types: [python]
-      # stages: [commit]
 -   repo: local
     hooks:
       - id: pytest
