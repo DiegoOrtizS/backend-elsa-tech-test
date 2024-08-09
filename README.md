@@ -33,3 +33,9 @@ pip install -r requirements.txt
 ```bash
 ./createsuperuser.sh
 ```
+
+## Instalar git hooks
+
+```bash
+./install-hooks.sh
+```
