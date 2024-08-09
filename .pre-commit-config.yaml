@@ -13,7 +13,7 @@ repos:
       entry: ruff check --fix .
       language: python
       types: [python]
-      stages: [prepare-commit-msg]
+      stages: [pre-commit]
 -   repo: local
     hooks:
     - id: mypy
