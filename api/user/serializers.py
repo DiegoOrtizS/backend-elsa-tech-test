@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "password",
+            "is_active",
         ]
         read_only_field = ["id"]
         extra_kwargs = {"password": {"write_only": True}}
@@ -37,3 +38,17 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create(**user_data)
         profile = UserProfile.objects.create(user=user, **validated_data)
         return profile
+
+    def update(self, instance: UserProfile, validated_data: dict) -> UserProfile:
+        user_data = validated_data.pop("user", None)
+
+        if user_data:
+            user_serializer = UserSerializer(instance.user, data=user_data, partial=True)
+            if user_serializer.is_valid(raise_exception=True):
+                user_serializer.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance

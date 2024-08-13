@@ -119,7 +119,7 @@ def test_list_user_profiles(
     url = reverse("users")
     response = client.get(url, {"role": role})
     assert response.status_code == status.HTTP_200_OK
-    assert len(response.data) == expected_count
+    assert response.data["count"] == expected_count
 
 
 @pytest.mark.parametrize(

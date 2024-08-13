@@ -53,7 +53,7 @@ class UserListView(viewsets.GenericViewSet, mixins.ListModelMixin):
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_fields = ("role",)
     ordering_fields = ("user__date_joined",)
-    ordering = ("user__date_joined",)
+    ordering = ("-user__date_joined",)
 
     def get_queryset(self) -> UserProfile:
         queryset = UserProfile.objects.all()
