@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, status, viewsets
 from rest_framework.filters import OrderingFilter
@@ -26,12 +28,12 @@ class UserView(APIView):
         }
         return Response(data, status=status.HTTP_201_CREATED)
 
-    def get(self, _request: Request, id: str) -> Response:
+    def get(self, _request: Request, id: UUID) -> Response:
         user = UserProfile.objects.get(id=id)
         serializer = UserProfileSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def delete(self, _request: Request, id: str) -> Response:
+    def delete(self, _request: Request, id: UUID) -> Response:
         user = UserProfile.objects.get(id=id)
         user.delete()
         return Response(
@@ -39,7 +41,7 @@ class UserView(APIView):
             status=status.HTTP_200_OK,
         )
 
-    def patch(self, request: Request, id: str) -> Response:
+    def patch(self, request: Request, id: UUID) -> Response:
         user = UserProfile.objects.get(id=id)
         serializer = UserProfileSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
