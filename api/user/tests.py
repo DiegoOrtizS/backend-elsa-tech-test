@@ -102,6 +102,27 @@ def test_delete_user_profile(client: APIClient, user_profile: UserProfile) -> No
 
 
 @pytest.mark.parametrize(
+    "role,expected_count",
+    [
+        ("", 1),
+        ("volunteer", 1),
+        ("adopter", 0),
+    ],
+)
+@pytest.mark.django_db
+def test_list_user_profiles(
+    client: APIClient,
+    user_profile: UserProfile,  # noqa: ARG001
+    role: str,
+    expected_count: int,
+) -> None:
+    url = reverse("users")
+    response = client.get(url, {"role": role})
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data) == expected_count
+
+
+@pytest.mark.parametrize(
     "method,expected_status_code",
     [
         ("get", status.HTTP_404_NOT_FOUND),

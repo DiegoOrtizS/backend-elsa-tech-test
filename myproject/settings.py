@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "djangorestframework_camel_case",
     "drf_orjson_renderer",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -172,6 +173,7 @@ REST_FRAMEWORK = {
         "no_underscore_before_number": True,
     },
     "EXCEPTION_HANDLER": "api.exceptions.custom_exception_handler",
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 SPECTACULAR_SETTINGS = {
