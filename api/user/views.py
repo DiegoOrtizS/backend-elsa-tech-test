@@ -14,7 +14,6 @@ class UserView(APIView):
     error_message = {"success": False, "msg": "Error updating user"}
 
     def post(self, request: Request) -> Response:
-        print(request.data)
         serializer: UserSerializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         account = serializer.save()
