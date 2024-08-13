@@ -20,7 +20,7 @@ class CustomUserManager(BaseUserManager):
     Custom user manager class
     """
 
-    def create_user(
+    def create(
         self, email: str, password: str | None = None, **kwargs: Unpack[UserKwargs]
     ) -> "CustomUser":
         """
@@ -72,7 +72,7 @@ class CustomUserManager(BaseUserManager):
         kwargs.setdefault("is_staff", True)
         kwargs.setdefault("is_superuser", True)
 
-        return self.create_user(email, password, **kwargs)
+        return self.create(email, password, **kwargs)
 
 
 class CustomUser(AbstractUser, PermissionsMixin):
