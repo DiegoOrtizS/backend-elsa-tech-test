@@ -29,7 +29,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ["user", "role"]
+        fields = ["id", "user", "role"]
+        read_only_fields = ["id"]
 
     def create(self, validated_data: dict) -> UserProfile:
         user_data = validated_data.pop("user")

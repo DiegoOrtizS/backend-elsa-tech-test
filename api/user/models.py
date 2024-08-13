@@ -1,5 +1,4 @@
 from typing import TypedDict
-from uuid import uuid4
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
@@ -76,12 +75,11 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser, PermissionsMixin):
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     username = None
     email = models.EmailField(unique=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name", "is_active"]
+    REQUIRED_FIELDS = ["first_name", "last_name"]
     objects = CustomUserManager()
 
     def __str__(self) -> str:
