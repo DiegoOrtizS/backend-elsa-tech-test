@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "api.authentication",
     "api.user",
     "api.animal",
+    "api.adoption",
     "corsheaders",
     "drf_spectacular",
     "djangorestframework_camel_case",

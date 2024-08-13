@@ -71,3 +71,31 @@ class IsAdminOrVolunteerAllowed(BasePermission):
             return False
 
         return user_profile.role == "volunteer"
+
+
+class IsAdminOrAdopterAllowed(BasePermission):
+    """
+    Custom permission to check if the authenticated user is an admin or an adopter.
+    """
+
+    def has_permission(self, request: Request, _view: View) -> bool:
+        if request.user.is_superuser:
+            return True
+
+        auth = JWTAuthentication()
+        try:
+            res = auth.authenticate(request)
+        except Exception as _e:
+            return False
+
+        if not res:
+            return False
+
+        user_id = res[0].id
+
+        try:
+            user_profile = UserProfile.objects.get(user_id=user_id)
+        except UserProfile.DoesNotExist:
+            return False
+
+        return user_profile.role == "adopter"

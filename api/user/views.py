@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from api.permissions import IsAdminOrVolunteerAllowed
 from api.user.models import UserProfile
 from api.user.serializers import UserProfileSerializer
 
@@ -51,7 +52,7 @@ class UserView(APIView):
 
 class UserListView(viewsets.GenericViewSet, mixins.ListModelMixin):
     serializer_class = UserProfileSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAdminOrVolunteerAllowed,)
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_fields = ("role",)
     ordering_fields = ("user__date_joined",)
@@ -60,6 +61,10 @@ class UserListView(viewsets.GenericViewSet, mixins.ListModelMixin):
     def get_queryset(self) -> UserProfile:
         queryset = UserProfile.objects.all()
         role = self.request.query_params.get("role", None)
+        if not self.request.user.is_superuser:
+            user_profile = UserProfile.objects.get(user_id=self.request.user.id)
+            if user_profile.role == "volunteer":
+                role = "adopter"
         if role:
             queryset = queryset.filter(role=role)
         return queryset
