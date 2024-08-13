@@ -171,6 +171,7 @@ REST_FRAMEWORK = {
     "JSON_UNDERSCOREIZE": {
         "no_underscore_before_number": True,
     },
+    "EXCEPTION_HANDLER": "api.exceptions.custom_exception_handler",
 }
 
 SPECTACULAR_SETTINGS = {

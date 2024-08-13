@@ -1,4 +1,5 @@
 from typing import TypedDict
+from uuid import uuid4
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
@@ -75,6 +76,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser, PermissionsMixin):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     username = None
     email = models.EmailField(unique=True)
 
@@ -101,6 +103,7 @@ class UserProfile(models.Model):
         ("adopter", "Adopter"),
     ]
 
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, choices=USER_ROLES)
     objects = models.Manager()
