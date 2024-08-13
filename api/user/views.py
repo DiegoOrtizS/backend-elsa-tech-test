@@ -1,4 +1,6 @@
-from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import mixins, status, viewsets
+from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -43,3 +45,19 @@ class UserView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserListView(viewsets.GenericViewSet, mixins.ListModelMixin):
+    serializer_class = UserProfileSerializer
+    permission_classes = (IsAdminUser,)
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_fields = ("role",)
+    ordering_fields = ("user__date_joined",)
+    ordering = ("user__date_joined",)
+
+    def get_queryset(self) -> UserProfile:
+        queryset = UserProfile.objects.all()
+        role = self.request.query_params.get("role", None)
+        if role:
+            queryset = queryset.filter(role=role)
+        return queryset

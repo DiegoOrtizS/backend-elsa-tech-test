@@ -1,7 +1,8 @@
 from django.urls import path
 
-from api.user.views import UserView
+from api.user.views import UserListView, UserView
 
 urlpatterns = [
-    path("", UserView.as_view(), name="user"),
+    path("user/", UserView.as_view(), name="user"),
+    path("users/", UserListView.as_view({"get": "list"}), name="users"),
 ]
