@@ -12,4 +12,5 @@ urlpatterns = [
     path(f"{version}/auth/", include("api.routers.auth")),
     path(f"{version}/", include("api.routers.user")),
     path(f"{version}/", include("api.routers.animal")),
+    path(f"{version}/", include("api.routers.adoption")),
 ]
