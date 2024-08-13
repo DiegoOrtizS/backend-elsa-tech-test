@@ -36,3 +36,10 @@ class UserView(APIView):
             {"statusCode": 200, "message": "User deleted successfully"},
             status=status.HTTP_200_OK,
         )
+
+    def patch(self, request: Request, id: str) -> Response:
+        user = UserProfile.objects.get(id=id)
+        serializer = UserProfileSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
