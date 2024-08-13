@@ -88,7 +88,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
         return str(self.email)
 
 
-class UserProfile:
+class UserProfile(models.Model):
     """
     User profile model
 
@@ -105,3 +105,4 @@ class UserProfile:
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, choices=USER_ROLES)
+    objects = models.Manager()
