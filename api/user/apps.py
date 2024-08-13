@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 
 
-class ShelterConfig(AppConfig):
+class UserConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "shelter"
+    name = "api.user"
+    label = "api_user"

@@ -1,3 +1,3 @@
 #!/bin/sh
-python manage.py make migrations
+python manage.py makemigrations
 python manage.py migrate

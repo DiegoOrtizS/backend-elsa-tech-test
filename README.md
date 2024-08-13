@@ -25,17 +25,17 @@ pip install -r requirements.txt
 ### Ejecutar migraciones
 
 ```bash
-./migrate.sh
+./scripts/migrate.sh
 ```
 
 ### Crear un superusuario
 
 ```bash
-./createsuperuser.sh
+./scripts/createsuperuser.sh
 ```
 
 ## Instalar git hooks
 
 ```bash
-./install-hooks.sh
+./scripts/install-hooks.sh
 ```
