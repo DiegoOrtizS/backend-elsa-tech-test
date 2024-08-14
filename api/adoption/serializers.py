@@ -28,8 +28,6 @@ class AdoptionCreateUpdateSerializer(serializers.ModelSerializer):
         queryset=User.objects.filter(userprofile__role="volunteer"),
         source="volunteer",
         write_only=True,
-        allow_null=True,
-        required=False,
     )
     adopter_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.filter(userprofile__role="adopter"),
