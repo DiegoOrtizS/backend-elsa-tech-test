@@ -3,7 +3,7 @@ from uuid import UUID
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, status, viewsets
 from rest_framework.filters import OrderingFilter
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -68,3 +68,29 @@ class UserListView(viewsets.GenericViewSet, mixins.ListModelMixin):
         if role:
             queryset = queryset.filter(role=role)
         return queryset
+
+
+class UserMeView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request: Request) -> Response:
+        if request.user.is_superuser:
+            user_data = {
+                "role": "admin",
+                "user": {
+                    "email": request.user.email,
+                    "first_name": request.user.first_name,
+                    "last_name": request.user.last_name,
+                },
+            }
+            return Response(user_data, status=status.HTTP_200_OK)
+        user = UserProfile.objects.get(user_id=request.user.id)
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request: Request) -> Response:
+        user = UserProfile.objects.get(user_id=request.user.id)
+        serializer = UserProfileSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
