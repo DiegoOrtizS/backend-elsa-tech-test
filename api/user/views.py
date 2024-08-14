@@ -74,6 +74,16 @@ class UserMeView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request: Request) -> Response:
+        if request.user.is_superuser:
+            user_data = {
+                "role": "admin",
+                "user": {
+                    "email": request.user.email,
+                    "first_name": request.user.first_name,
+                    "last_name": request.user.last_name,
+                },
+            }
+            return Response(user_data, status=status.HTTP_200_OK)
         user = UserProfile.objects.get(user_id=request.user.id)
         serializer = UserProfileSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
